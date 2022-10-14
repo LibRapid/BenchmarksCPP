@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "lib/librapid/src/librapid/vendor/fmt",
+		"source" : "lib/librapid/src/librapid/vendor/fmt"
+	}
+}

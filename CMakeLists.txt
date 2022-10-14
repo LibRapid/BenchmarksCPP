@@ -1,0 +1,22 @@
+cmake_minimum_required(VERSION 3.16)
+project(BenchmarksCPP)
+
+set(CMAKE_CXX_STANDARD 17)
+
+# Set some options
+set(XTENSOR_USE_XSIMD on)
+set(XTENSOR_USE_OPENMP on)
+set(XTENSOR_USE_FLENS_BLAS on)
+
+# Add the required libraries
+add_subdirectory(lib/librapid)
+add_subdirectory(lib/eigen)
+add_subdirectory(lib/xtl)
+add_subdirectory(lib/xsimd)
+add_subdirectory(lib/xtensor)
+
+add_executable(BenchmarksCPP main.cpp)
+
+target_link_libraries(BenchmarksCPP PUBLIC librapid eigen xtl xsimd xtensor)
+target_include_directories(BenchmarksCPP PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/json/single_include/nlohmann")
+target_include_directories(BenchmarksCPP PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/lib/eigen/Eigen")

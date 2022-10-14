@@ -1,0 +1,35 @@
+{
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_custom_target"
+		],
+		"files" : 
+		[
+			"lib/librapid/src/librapid/vendor/Vc/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 107,
+				"parent" : 0
+			}
+		]
+	},
+	"id" : "AVX::@2879df5e1e3dcbf6fa22",
+	"name" : "AVX",
+	"paths" : 
+	{
+		"build" : "lib/librapid/src/librapid/vendor/Vc",
+		"source" : "lib/librapid/src/librapid/vendor/Vc"
+	},
+	"sources" : [],
+	"type" : "UTILITY"
+}

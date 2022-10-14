@@ -1,0 +1,23 @@
+# ------------ LibRapid ----------------------------------
+[submodule "lib/librapid"] # LibRapid
+	path = lib/librapid
+	url = https://github.com/LibRapid/librapid.git
+
+# ------------- Eigen ------------------------------------
+[submodule "lib/eigen"] # Eigen
+	path = lib/eigen
+	url = https://gitlab.com/libeigen/eigen.git
+
+# ------------ xtensor -----------------------------------
+[submodule "lib/xtl"] # xtensor::xtl
+	path = lib/xtl
+	url = https://github.com/xtensor-stack/xtl.git
+[submodule "lib/xsimd"] # xtensor::xtl
+	path = lib/xsimd
+	url = https://github.com/xtensor-stack/xsimd.git
+[submodule "lib/xtensor"]
+	path = lib/xtensor
+	url = https://github.com/xtensor-stack/xtensor.git
+[submodule "json"]
+	path = json
+	url = https://github.com/nlohmann/json.git
