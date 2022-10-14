@@ -320,14 +320,14 @@ int main() {
 		{"eigen", {
 				{"time", 1},
 				{"dtype", "f32"},
-				{"threads", 1},
+				{"threads", 8},
 				{"sizes", arithmeticSizes}
 			}
 		},
 		{"xtensor", {
 				{"time", 1},
 				{"dtype", "f32"},
-				{"threads", 1},
+				{"threads", 8},
 				{"sizes", arithmeticSizes}
 			}
 		},
