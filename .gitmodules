@@ -18,6 +18,8 @@
 [submodule "lib/xtensor"]
 	path = lib/xtensor
 	url = https://github.com/xtensor-stack/xtensor.git
+
+# JSON for Modern C++
 [submodule "json"]
 	path = json
 	url = https://github.com/nlohmann/json.git

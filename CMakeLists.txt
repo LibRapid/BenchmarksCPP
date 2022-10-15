@@ -15,8 +15,14 @@ add_subdirectory(lib/xtl)
 add_subdirectory(lib/xsimd)
 add_subdirectory(lib/xtensor)
 
-add_executable(BenchmarksCPP main.cpp)
+file(GLOB BENCHMARK_SOURCE_FILES
+        "${CMAKE_CURRENT_SOURCE_DIR}/benchmarks/src/*.cpp"
+        )
+
+add_executable(BenchmarksCPP main.cpp
+        ${BENCHMARK_SOURCE_FILES})
 
 target_link_libraries(BenchmarksCPP PUBLIC librapid eigen xtl xsimd xtensor)
 target_include_directories(BenchmarksCPP PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/json/single_include/nlohmann")
 target_include_directories(BenchmarksCPP PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/lib/eigen/Eigen")
+target_include_directories(BenchmarksCPP PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
