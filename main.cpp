@@ -1,4 +1,8 @@
+#include <omp.h>
+#include <json.hpp> // JSON
+
 // Include the libraries
+
 // ----- LibRapid ----------------
 #include <librapid>
 
@@ -10,9 +14,6 @@
 #include <xtensor/xio.hpp>
 #include <xtensor/xview.hpp>
 
-// JSON
-#include <json.hpp>
-
 // Namespace aliases
 namespace lrc  = librapid;
 namespace json = nlohmann;
@@ -21,7 +22,7 @@ using namespace nlohmann::literals;
 // Utility functions
 std::string formatTime(double time) {
 	std::stringstream ss;
-	ss << std::fixed << std::setprecision(4) << time;
+	ss << std::fixed << std::setprecision(6) << time;
 	return ss.str();
 }
 
@@ -120,7 +121,9 @@ json::json benchmarkArithmeticPreallocate(const json::json &options) {
 
 		json::json sizes  = config["sizes"];
 		std::string dtype = jsonContains(config, "dtype") ? config["dtype"] : "f32";
-		double time		  = jsonContains(config, "time") ? (double)config["time"] : 1.0;
+		lrc::i64 iters	  = jsonContains(config, "iters") ? (lrc::i64)config["iters"] : -1;
+		lrc::i64 samples  = jsonContains(config, "samples") ? (lrc::i64)config["samples"] : -1;
+		double time		  = jsonContains(config, "time") ? (double)config["time"] : -1;
 		lrc::i64 threads  = jsonContains(config, "threads") ? (lrc::i64)config["threads"] : 1;
 
 		lrc::setNumThreads(threads);
@@ -139,27 +142,28 @@ json::json benchmarkArithmeticPreallocate(const json::json &options) {
 				lrc::Array<float> lhs(extent);
 				lrc::Array<float> rhs(extent);
 				lrc::Array<float> res(extent);
-				bench = lrc::timeFunction([&]() { res = lhs + rhs; }, -1, -1, time);
+				bench = lrc::timeFunction([&]() { res = lhs + rhs; }, samples, iters, time);
 			} else if (dtype == "f64") {
 				lrc::Array<double> lhs(extent);
 				lrc::Array<double> rhs(extent);
 				lrc::Array<double> res(extent);
-				bench = lrc::timeFunction([&]() { res = lhs + rhs; }, -1, -1, time);
+				bench = lrc::timeFunction([&]() { res = lhs + rhs; }, samples, iters, time);
 			} else if (dtype == "i32") {
 				lrc::Array<lrc::i32> lhs(extent);
 				lrc::Array<lrc::i32> rhs(extent);
 				lrc::Array<lrc::i32> res(extent);
-				bench = lrc::timeFunction([&]() { res = lhs + rhs; }, -1, -1, time);
+				bench = lrc::timeFunction([&]() { res = lhs + rhs; }, samples, iters, time);
 			} else if (dtype == "i64") {
 				lrc::Array<lrc::i64> lhs(extent);
 				lrc::Array<lrc::i64> rhs(extent);
 				lrc::Array<lrc::i64> res(extent);
-				bench = lrc::timeFunction([&]() { res = lhs + rhs; }, -1, -1, time);
+				bench = lrc::timeFunction([&]() { res = lhs + rhs; }, samples, iters, time);
 			} else {
 				LR_ASSERT(false, "Invalid dtype");
 			}
 
 			results["#1 LibRapid (ms)"] += formatTime(bench.avg / 1000000);
+			std::cout << "Benchmarked " << size << "\n";
 		}
 	}
 
@@ -172,7 +176,14 @@ json::json benchmarkArithmeticPreallocate(const json::json &options) {
 
 		json::json sizes  = config["sizes"];
 		std::string dtype = jsonContains(config, "dtype") ? config["dtype"] : "f32";
-		double time		  = jsonContains(config, "time") ? (double)config["time"] : 1.0;
+		lrc::i64 iters	  = jsonContains(config, "iters") ? (lrc::i64)config["iters"] : -1;
+		lrc::i64 samples  = jsonContains(config, "samples") ? (lrc::i64)config["samples"] : -1;
+		double time		  = jsonContains(config, "time") ? (double)config["time"] : -1;
+		lrc::i64 threads  = jsonContains(config, "threads") ? (lrc::i64)config["threads"] : 1;
+
+		omp_set_num_threads(threads);
+		Eigen::setNbThreads(threads);
+
 		for (const auto &size : sizes) {
 			auto extent = size.get<std::vector<lrc::i64>>();
 			// Add the size to the results
@@ -186,17 +197,17 @@ json::json benchmarkArithmeticPreallocate(const json::json &options) {
 				Eigen::MatrixXf lhs(extent[0], extent.size() > 1 ? extent[1] : 1);
 				Eigen::MatrixXf rhs(extent[0], extent.size() > 1 ? extent[1] : 1);
 				Eigen::MatrixXf res(extent[0], extent.size() > 1 ? extent[1] : 1);
-				bench = lrc::timeFunction([&]() { res = lhs + rhs; }, -1, -1, time);
+				bench = lrc::timeFunction([&]() { res = lhs + rhs; }, samples, iters, time);
 			} else if (dtype == "f64") {
 				Eigen::MatrixXd lhs(extent[0], extent.size() > 1 ? extent[1] : 1);
 				Eigen::MatrixXd rhs(extent[0], extent.size() > 1 ? extent[1] : 1);
 				Eigen::MatrixXd res(extent[0], extent.size() > 1 ? extent[1] : 1);
-				bench = lrc::timeFunction([&]() { res = lhs + rhs; }, -1, -1, time);
+				bench = lrc::timeFunction([&]() { res = lhs + rhs; }, samples, iters, time);
 			} else if (dtype == "i32") {
 				Eigen::MatrixXi lhs(extent[0], extent.size() > 1 ? extent[1] : 1);
 				Eigen::MatrixXi rhs(extent[0], extent.size() > 1 ? extent[1] : 1);
 				Eigen::MatrixXi res(extent[0], extent.size() > 1 ? extent[1] : 1);
-				bench = lrc::timeFunction([&]() { res = lhs + rhs; }, -1, -1, time);
+				bench = lrc::timeFunction([&]() { res = lhs + rhs; }, samples, iters, time);
 			} else if (dtype == "i64") {
 				LR_ASSERT(false, "Eigen does not support i64");
 			} else {
@@ -204,6 +215,7 @@ json::json benchmarkArithmeticPreallocate(const json::json &options) {
 			}
 
 			results["#2 Eigen (ms)"] += formatTime(bench.avg / 1000000);
+			std::cout << "Benchmarked " << size << "\n";
 		}
 	}
 
@@ -216,7 +228,13 @@ json::json benchmarkArithmeticPreallocate(const json::json &options) {
 
 		json::json sizes  = config["sizes"];
 		std::string dtype = jsonContains(config, "dtype") ? config["dtype"] : "f32";
-		double time		  = jsonContains(config, "time") ? (double)config["time"] : 1.0;
+		lrc::i64 iters	  = jsonContains(config, "iters") ? (lrc::i64)config["iters"] : -1;
+		lrc::i64 samples  = jsonContains(config, "samples") ? (lrc::i64)config["samples"] : -1;
+		double time		  = jsonContains(config, "time") ? (double)config["time"] : -1;
+		lrc::i64 threads  = jsonContains(config, "threads") ? (lrc::i64)config["threads"] : 1;
+
+		omp_set_num_threads(threads);
+
 		for (const auto &size : sizes) {
 			auto extent = size.get<std::vector<lrc::i64>>();
 			// Add the size to the results
@@ -231,40 +249,53 @@ json::json benchmarkArithmeticPreallocate(const json::json &options) {
 				xt::xarray<float> lhs(shape);
 				xt::xarray<float> rhs(shape);
 				xt::xarray<float> res(shape);
-				bench = lrc::timeFunction([&]() { res = lhs + rhs; }, -1, -1, time);
+				bench = lrc::timeFunction([&]() { res = lhs + rhs; }, samples, iters, time);
 			} else if (dtype == "f64") {
 				xt::xarray<double>::shape_type shape(extent.begin(), extent.end());
 				xt::xarray<double> lhs(shape);
 				xt::xarray<double> rhs(shape);
 				xt::xarray<double> res(shape);
-				bench = lrc::timeFunction([&]() { res = lhs + rhs; }, -1, -1, time);
+				bench = lrc::timeFunction([&]() { res = lhs + rhs; }, samples, iters, time);
 			} else if (dtype == "i32") {
 				xt::xarray<int>::shape_type shape(extent.begin(), extent.end());
 				xt::xarray<int> lhs(shape);
 				xt::xarray<int> rhs(shape);
 				xt::xarray<int> res(shape);
-				bench = lrc::timeFunction([&]() { res = lhs + rhs; }, -1, -1, time);
+				bench = lrc::timeFunction([&]() { res = lhs + rhs; }, samples, iters, time);
 			} else if (dtype == "i64") {
 				xt::xarray<long>::shape_type shape(extent.begin(), extent.end());
 				xt::xarray<long> lhs(shape);
 				xt::xarray<long> rhs(shape);
 				xt::xarray<long> res(shape);
-				bench = lrc::timeFunction([&]() { res = lhs + rhs; }, -1, -1, time);
+				bench = lrc::timeFunction([&]() { res = lhs + rhs; }, samples, iters, time);
 			} else {
 				LR_ASSERT(false, "Invalid dtype");
 			}
 
 			results["#3 XTensor (ms)"] += formatTime(bench.avg / 1000000);
+			std::cout << "Benchmarked " << size << "\n";
 		}
 	}
 
+	lrc::ui64 maxSize = lrc::max(results["#1 LibRapid (ms)"].size(),
+								 results["#2 Eigen (ms)"].size(),
+								 results["#3 XTensor (ms)"].size());
+
 	std::vector<double> librapidTimes, eigenTimes, xtensorTimes;
-	for (const auto &time : results["#1 LibRapid (ms)"])
+	for (const auto &time : results["#1 LibRapid (ms)"]) {
 		librapidTimes.push_back(std::stod(time.get<std::string>()));
-	for (const auto &time : results["#2 Eigen (ms)"])
+	}
+	for (const auto &time : results["#2 Eigen (ms)"]) {
 		eigenTimes.push_back(std::stod(time.get<std::string>()));
-	for (const auto &time : results["#3 XTensor (ms)"])
+	}
+	for (const auto &time : results["#3 XTensor (ms)"]) {
 		xtensorTimes.push_back(std::stod(time.get<std::string>()));
+	}
+
+	// Pad the results to fill in empty values
+	for (lrc::ui64 i = librapidTimes.size(); i < maxSize; ++i) { librapidTimes.push_back(1e100); }
+	for (lrc::ui64 i = eigenTimes.size(); i < maxSize; ++i) { eigenTimes.push_back(1e100); }
+	for (lrc::ui64 i = xtensorTimes.size(); i < maxSize; ++i) { xtensorTimes.push_back(1e100); }
 
 	results["#4 Fastest"] = {};
 	for (lrc::i64 i = 0; i < librapidTimes.size(); ++i) {
@@ -292,45 +323,89 @@ int main() {
 
 	fmt::print("{}\n", tableToString(testTable));
 
-	json::json arithmeticSizes = {
+	json::json arithmeticSizesAll = {
 	  {10, 10},
 	  {25, 25},
 	  {50, 50},
+	  {75, 75},
 	  {100, 100},
 	  {250, 250},
 	  {500, 500},
 	  {750, 750},
 	  {1000, 1000},
+	  {1250, 1250},
 	  {2500, 2500},
 	  {5000, 5000},
 	  {7500, 7500},
 	  {10000, 10000},
+	  {12500, 12500},
+	  {15000, 15000},
+	  {17500, 17500},
+	  {20000, 20000},
+	};
+
+	json::json arithmeticSizesLowHalf = {
+	  {10, 10},
+	  {25, 25},
+	  {50, 50},
+	  {75, 75},
+	  {100, 100},
+	  {250, 250},
+	  {500, 500},
+	  {750, 750},
+	  {1000, 1000},
+	  {1250, 1250},
+	  {2500, 2500},
+	  {5000, 5000},
+	  {10000, 10000},
+	  {12500, 12500},
+	};
+
+	json::json arithmeticSizesHighHalf = {
+	  {500, 500},
+	  {750, 750},
+	  {1000, 1000},
+	  {1250, 1250},
+	  {2500, 2500},
+	  {5000, 5000},
+	  {7500, 7500},
+	  {10000, 10000},
+	  {12500, 12500},
+	  {15000, 15000},
+	  {17500, 17500},
+	  {20000, 20000},
 	};
 
 	// clang-format off
 
 	json::json config {
 		{"librapid", {
-				{"time", 1},
+				{"iters", -1},
+				{"samples", -1},
+				{"time", 10},
 				{"dtype", "f32"},
 				{"threads", 8},
-				{"sizes", arithmeticSizes}
+				{"sizes", arithmeticSizesAll}
 			}
 		},
 		{"eigen", {
-				{"time", 1},
+				{"iters", -1},
+				{"samples", -1},
+				{"time", 10},
 				{"dtype", "f32"},
 				{"threads", 8},
-				{"sizes", arithmeticSizes}
+				{"sizes", arithmeticSizesLowHalf}
 			}
 		},
 		{"xtensor", {
-				{"time", 1},
+				{"iters", -1},
+				{"samples", -1},
+				{"time", 10},
 				{"dtype", "f32"},
 				{"threads", 8},
-				{"sizes", arithmeticSizes}
+				{"sizes", arithmeticSizesLowHalf}
 			}
-		},
+		}
 	};
 
 	// clang-format on

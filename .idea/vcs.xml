@@ -2,5 +2,12 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/json" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/eigen" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/librapid" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/librapid/version2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/xsimd" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/xtensor" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/xtl" vcs="Git" />
   </component>
 </project>
