@@ -8,6 +8,8 @@ set(XTENSOR_USE_XSIMD on)
 set(XTENSOR_USE_OPENMP on)
 set(XTENSOR_USE_FLENS_BLAS on)
 
+set(LIBRAPID_OPTIMISE_SMALL_ARRAYS on)
+
 # Add the required libraries
 add_subdirectory(lib/librapid)
 add_subdirectory(lib/eigen)

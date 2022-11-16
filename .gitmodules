@@ -1,9 +1,4 @@
 # ------------ LibRapid ----------------------------------
-[submodule "lib/librapid"] # LibRapid
-	path = lib/librapid
-	url = https://github.com/LibRapid/librapid.git
-
-# ------------- Eigen ------------------------------------
 [submodule "lib/eigen"] # Eigen
 	path = lib/eigen
 	url = https://gitlab.com/libeigen/eigen.git
@@ -23,3 +18,6 @@
 [submodule "json"]
 	path = json
 	url = https://github.com/nlohmann/json.git
+[submodule "lib/librapid"]
+	path = lib/librapid
+	url = https://github.com/LibRapid/librapid

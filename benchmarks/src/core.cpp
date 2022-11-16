@@ -1,8 +1,9 @@
 #include <benchmarks/core.hpp>
 
 std::string formatTime(double time) {
+	// Time is in nanoseconds
 	std::stringstream ss;
-	ss << std::fixed << std::setprecision(6) << time;
+	ss << std::fixed << std::setprecision(6) << (time / 1000000) << "ms";
 	return ss.str();
 }
 
@@ -10,8 +11,8 @@ bool jsonContains(const json::json &j, const std::string &key) { return j.find(k
 
 std::string tableToString(const json::json &table) {
 	std::string tableString("-+-");
-	std::vector<lrc::i64> colWidths;
-	lrc::i64 maxRowLength = 0;
+	std::vector<int64_t> colWidths;
+	int64_t maxRowLength = 0;
 
 	// Extract column widths
 	for (const auto &[key, value] : table.items()) {
@@ -19,7 +20,7 @@ std::string tableToString(const json::json &table) {
 		for (const auto &val : value) {
 			std::stringstream stream;
 			stream << val;
-			maxWidth = lrc::max(maxWidth, static_cast<lrc::i64>(stream.str().length()));
+			maxWidth = lrc::max(maxWidth, static_cast<int64_t>(stream.str().length()));
 		}
 		colWidths.emplace_back(maxWidth);
 		tableString += std::string(maxWidth, '-') + "-+-";
@@ -27,12 +28,12 @@ std::string tableToString(const json::json &table) {
 
 	// Extract row lengths
 	for (const auto &[key, value] : table.items()) {
-		maxRowLength = lrc::max(maxRowLength, lrc::i64(value.size()));
+		maxRowLength = lrc::max(maxRowLength, int64_t(value.size()));
 	}
 
 	std::string heading("\n | ");
 	std::string line("-+-");
-	lrc::i64 index = 0;
+	int64_t index = 0;
 	for (const auto &[key, value] : table.items()) {
 		std::stringstream stream;
 		stream << std::setw(colWidths[index]) << std::left << key;
@@ -48,9 +49,9 @@ std::string tableToString(const json::json &table) {
 	std::vector<std::vector<std::string>> rows(maxRowLength);
 
 	// Extract rows
-	lrc::i64 colIndex = 0;
+	int64_t colIndex = 0;
 	for (const auto &[key, value] : table.items()) {
-		for (lrc::i64 i = 0; i < maxRowLength; ++i) {
+		for (int64_t i = 0; i < maxRowLength; ++i) {
 			std::stringstream stream;
 			stream << std::setw(colWidths[colIndex]) << std::left
 				   << (i < value.size() ? value[i] : json::json {});
@@ -59,9 +60,9 @@ std::string tableToString(const json::json &table) {
 		colIndex++;
 	}
 
-	for (lrc::i64 i = 0; i < maxRowLength; ++i) {
+	for (int64_t i = 0; i < maxRowLength; ++i) {
 		std::string rowString(" | ");
-		for (lrc::i64 j = 0; j < colWidths.size(); ++j) {
+		for (int64_t j = 0; j < colWidths.size(); ++j) {
 			rowString += fmt::format("{:>{}}", rows[i][j], colWidths[j]);
 			rowString += " | ";
 		}
