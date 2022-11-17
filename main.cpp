@@ -61,39 +61,51 @@ static const json::json defaultConfig = {
 };
 // clang-format on
 
-void arithmetic(const json::json &config) {
+json::json arithmetic(const json::json &config) {
 	fmt::print("================== MATRIX ARITHMETIC ==================\n");
 	auto arithmeticResults = benchmarkArithmeticPreallocate(config);
-	fmt::print("{}\n", tableToString(arithmeticResults));
+	return arithmeticResults;
 }
 
 int main() {
+#if defined(USING_GITHUB_ACTIONS)
 	json::json sizes;
-	for (size_t i = 20; i <= 10000; i += 20) { sizes.push_back({i, i}); }
+	for (size_t i = 10; i <= 10000; i += 10) { sizes.push_back({i, i}); }
+	double time = 5;
+#else
+	json::json sizes;
+	for (size_t i = 50; i <= 2000; i += 50) { sizes.push_back({i, i}); }
+	double time = 2;
+#endif // USING_GITHUB_ACTIONS
 
 	json::json config {{"librapid",
 						{{"iters", -1},
 						 {"samples", -1},
-						 {"time", 2},
+						 {"time", time},
 						 {"dtype", "f32"},
 						 {"threads", 1},
 						 {"sizes", sizes}}},
 					   {"eigen",
 						{{"iters", -1},
 						 {"samples", -1},
-						 {"time", 2},
+						 {"time", time},
 						 {"dtype", "f32"},
 						 {"threads", 1},
 						 {"sizes", sizes}}},
 					   {"xtensor",
 						{{"iters", -1},
 						 {"samples", -1},
-						 {"time", 2},
+						 {"time", time},
 						 {"dtype", "f32"},
 						 {"threads", 1},
 						 {"sizes", sizes}}}};
 
-	arithmetic(config);
+	json::json arithmeticResults = arithmetic(config);
+	fmt::print("{}\n", tableToString(arithmeticResults));
+
+#if defined(USING_GITHUB_ACTIONS)
+	saveTableToFile("results/autorun/arithmetic.txt", arithmeticResults);
+#endif // USING_GITHUB_ACTIONS
 
 	return 0;
 }

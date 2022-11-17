@@ -5,6 +5,7 @@
     <mapping directory="$PROJECT_DIR$/json" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/lib/eigen" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/lib/librapid" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/librapid/doxygenThemes" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/lib/librapid/version2" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/lib/xsimd" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/lib/xtensor" vcs="Git" />

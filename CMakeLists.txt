@@ -3,6 +3,8 @@ project(BenchmarksCPP)
 
 set(CMAKE_CXX_STANDARD 17)
 
+option(USING_GITHUB_ACTIONS "Using Github Actions" OFF)
+
 # Set some options
 set(XTENSOR_USE_XSIMD on)
 set(XTENSOR_USE_OPENMP on)
@@ -28,3 +30,7 @@ target_link_libraries(BenchmarksCPP PUBLIC librapid eigen xtl xsimd xtensor)
 target_include_directories(BenchmarksCPP PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/json/single_include/nlohmann")
 target_include_directories(BenchmarksCPP PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/lib/eigen/Eigen")
 target_include_directories(BenchmarksCPP PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
+
+if (USING_GITHUB_ACTIONS)
+    target_compile_definitions(BenchmarksCPP PUBLIC USING_GITHUB_ACTIONS)
+endif ()

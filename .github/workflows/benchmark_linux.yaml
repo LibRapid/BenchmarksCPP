@@ -36,7 +36,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DUSING_GITHUB_ACTIONS=ON
           cmake --build . --config Release
 
       - name: Run Benchmark

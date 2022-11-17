@@ -93,3 +93,5 @@ inline std::string formatBench(const Bench &bench, bool includeIters = true) {
 
 	return res;
 }
+
+void saveTableToFile(const std::string &filename, const json::json &data);

@@ -81,3 +81,10 @@ std::string tableToString(const json::json &table) {
 
 	return tableString;
 }
+
+void saveTableToFile(const std::string &filename, const json::json &data) {
+	std::string dataString = tableToString(data);
+	std::ofstream file(filename);
+	file << dataString;
+	file.close();
+}
