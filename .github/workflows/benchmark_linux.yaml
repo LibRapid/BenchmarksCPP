@@ -43,4 +43,4 @@ jobs:
         run: |
           cd build
           ls
-          ./BenchmarkCPP
+          ./BenchmarksCPP
