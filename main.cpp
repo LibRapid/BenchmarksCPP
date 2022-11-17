@@ -104,7 +104,7 @@ int main() {
 	fmt::print("{}\n", tableToString(arithmeticResults));
 
 #if defined(USING_GITHUB_ACTIONS)
-	saveTableToFile("results/autorun/arithmetic.txt", arithmeticResults);
+	saveTableToFile("arithmeticResults.txt", arithmeticResults);
 #endif // USING_GITHUB_ACTIONS
 
 	return 0;

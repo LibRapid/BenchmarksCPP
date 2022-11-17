@@ -31,7 +31,7 @@ jobs:
 
       - name: Get latest CMake and ninja
         uses: lukka/get-cmake@latest
-      
+
       - name: Build the Benchmarks
         run: |
           mkdir build
@@ -44,3 +44,9 @@ jobs:
           cd build
           ls
           ./BenchmarksCPP
+
+      - name: Upload Benchmark Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: arithmeticResults
+          path: build/arithmeticResults.txt
