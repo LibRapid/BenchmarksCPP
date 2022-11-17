@@ -69,26 +69,26 @@ void arithmetic(const json::json &config) {
 
 int main() {
 	json::json sizes;
-	for (size_t i = 50; i <= 1000; i += 50) { sizes.push_back({i, i}); }
+	for (size_t i = 20; i <= 10000; i += 20) { sizes.push_back({i, i}); }
 
 	json::json config {{"librapid",
 						{{"iters", -1},
 						 {"samples", -1},
-						 {"time", 10},
+						 {"time", 2},
 						 {"dtype", "f32"},
 						 {"threads", 1},
 						 {"sizes", sizes}}},
 					   {"eigen",
 						{{"iters", -1},
 						 {"samples", -1},
-						 {"time", 10},
+						 {"time", 2},
 						 {"dtype", "f32"},
 						 {"threads", 1},
 						 {"sizes", sizes}}},
 					   {"xtensor",
 						{{"iters", -1},
 						 {"samples", -1},
-						 {"time", 10},
+						 {"time", 2},
 						 {"dtype", "f32"},
 						 {"threads", 1},
 						 {"sizes", sizes}}}};
