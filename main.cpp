@@ -70,12 +70,12 @@ json::json arithmetic(const json::json &config) {
 int main() {
 #if defined(USING_GITHUB_ACTIONS)
 	json::json sizes;
-	for (size_t i = 10; i <= 10000; i += 10) { sizes.push_back({i, i}); }
-	double time = 5;
+	for (size_t i = 10; i <= 5000; i += 10) { sizes.push_back({i, i}); }
+	double time = 2.5;
 #else
 	json::json sizes;
-	for (size_t i = 50; i <= 2000; i += 50) { sizes.push_back({i, i}); }
-	double time = 2;
+	for (size_t i = 100; i <= 2000; i += 100) { sizes.push_back({i, i}); }
+	double time = 1;
 #endif // USING_GITHUB_ACTIONS
 
 	json::json config {{"librapid",
@@ -103,9 +103,7 @@ int main() {
 	json::json arithmeticResults = arithmetic(config);
 	fmt::print("{}\n", tableToString(arithmeticResults));
 
-#if defined(USING_GITHUB_ACTIONS)
 	saveTableToFile("arithmeticResults.txt", arithmeticResults);
-#endif // USING_GITHUB_ACTIONS
 
 	return 0;
 }

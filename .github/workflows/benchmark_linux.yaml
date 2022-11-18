@@ -1,12 +1,6 @@
 name: Run Benchmarks (Linux)
 
 on:
-  push:
-    branches:
-      - "**"
-  pull_request:
-    branches:
-      - "**"
   schedule:
     # Every day at 00:00
     - cron: '0 0 * * *'
@@ -32,6 +26,10 @@ jobs:
       - name: Get latest CMake and ninja
         uses: lukka/get-cmake@latest
 
+      - name: Update Libraries
+        run: |
+          git submodule update --init --recursive
+
       - name: Build the Benchmarks
         run: |
           mkdir build
@@ -44,6 +42,17 @@ jobs:
           cd build
           ls
           ./BenchmarksCPP
+
+      - name: Push Changes
+        continue-on-error: true
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions@users.noreply.github.com"
+          
+          git pull
+          git add -A
+          git commit -m "Update GitHub Actions Benchmark Results"
+          git push origin master
 
       - name: Upload Benchmark Results
         uses: actions/upload-artifact@v2
