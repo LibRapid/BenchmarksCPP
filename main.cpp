@@ -68,14 +68,20 @@ json::json arithmetic(const json::json &config) {
 }
 
 int main() {
+#if defined(LIBRAPID_OPTIMISE_SMALL_ARRAYS)
+	fmt::print("Small arrays optimised\n");
+#else
+	fmt::print("Small arrays not optimised\n");
+#endif
+
 #if defined(USING_GITHUB_ACTIONS)
 	json::json sizes;
 	for (size_t i = 10; i <= 5000; i += 10) { sizes.push_back({i, i}); }
 	double time = 2.5;
 #else
 	json::json sizes;
-	for (size_t i = 100; i <= 2000; i += 100) { sizes.push_back({i, i}); }
-	double time = 1;
+	for (size_t i = 10; i <= 1000; i += 10) { sizes.push_back({i, i}); }
+	double time = 0.05;
 #endif // USING_GITHUB_ACTIONS
 
 	json::json config {{"librapid",
