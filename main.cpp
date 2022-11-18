@@ -81,7 +81,7 @@ int main() {
 #else
 	json::json sizes;
 	for (size_t i = 10; i <= 1000; i += 10) { sizes.push_back({i, i}); }
-	double time = 0.05;
+	double time = 0.1;
 #endif // USING_GITHUB_ACTIONS
 
 	json::json config {{"librapid",
