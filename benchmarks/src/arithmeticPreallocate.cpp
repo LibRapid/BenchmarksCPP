@@ -89,28 +89,28 @@ json::json benchmarkArithmeticPreallocate(const json::json &options) {
 				xt::xarray<float> lhs(shape);
 				xt::xarray<float> rhs(shape);
 				xt::xarray<float> res(shape);
-				bench = timeFunction([&]() { res = lhs + rhs; }, samples, iters, time);
+				bench = timeFunction([&res, &lhs, &rhs]() { res = lhs + rhs; }, samples, iters, time);
 				fmt::print("Preventing Optimisation: {}\n", res(0, 0));
 			} else if (dtype == "f64") {
 				xt::xarray<double>::shape_type shape(extent.begin(), extent.end());
 				xt::xarray<double> lhs(shape);
 				xt::xarray<double> rhs(shape);
 				xt::xarray<double> res(shape);
-				bench = timeFunction([&]() { res = lhs + rhs; }, samples, iters, time);
+				bench = timeFunction([&res, &lhs, &rhs]() { res = lhs + rhs; }, samples, iters, time);
 				fmt::print("Preventing Optimisation: {}\n", res(0, 0));
 			} else if (dtype == "int32_t") {
 				xt::xarray<int>::shape_type shape(extent.begin(), extent.end());
 				xt::xarray<int> lhs(shape);
 				xt::xarray<int> rhs(shape);
 				xt::xarray<int> res(shape);
-				bench = timeFunction([&]() { res = lhs + rhs; }, samples, iters, time);
+				bench = timeFunction([&res, &lhs, &rhs]() { res = lhs + rhs; }, samples, iters, time);
 				fmt::print("Preventing Optimisation: {}\n", res(0, 0));
 			} else if (dtype == "i64") {
 				xt::xarray<long>::shape_type shape(extent.begin(), extent.end());
 				xt::xarray<long> lhs(shape);
 				xt::xarray<long> rhs(shape);
 				xt::xarray<long> res(shape);
-				bench = timeFunction([&]() { res = lhs + rhs; }, samples, iters, time);
+				bench = timeFunction([&res, &lhs, &rhs]() { res = lhs + rhs; }, samples, iters, time);
 				fmt::print("Preventing Optimisation: {}\n", res(0, 0));
 			} else {
 				LIBRAPID_ASSERT(false, "Invalid dtype");
@@ -137,6 +137,12 @@ json::json benchmarkArithmeticPreallocate(const json::json &options) {
 
 		lrc::global::numThreads = threads;
 
+#if defined(LIBRAPID_OPTIMISE_SMALL_ARRAYS)
+		fmt::print("Small arrays optimised\n");
+#else
+		fmt::print("Small arrays not optimised\n");
+#endif
+
 		for (const auto &size : sizes) {
 			lrc::Shape shape(size.get<std::vector<int64_t>>());
 			// Add the size to the results
@@ -151,19 +157,19 @@ json::json benchmarkArithmeticPreallocate(const json::json &options) {
 				lrc::Array<float> lhs(shape);
 				lrc::Array<float> rhs(shape);
 				lrc::Array<float> res(shape);
-				bench = timeFunction([&]() { res = lhs + rhs; }, samples, iters, time);
+				bench = timeFunction([&res, &lhs, &rhs]() { res = lhs + rhs; }, samples, iters, time);
 				fmt::print("Preventing Optimisation: {}\n", res.storage()[0]);
 			} else if (dtype == "f64") {
 				lrc::Array<double> lhs(shape);
 				lrc::Array<double> rhs(shape);
 				lrc::Array<double> res(shape);
-				bench = timeFunction([&]() { res = lhs + rhs; }, samples, iters, time);
+				bench = timeFunction([&res, &lhs, &rhs]() { res = lhs + rhs; }, samples, iters, time);
 				fmt::print("Preventing Optimisation: {}\n", res.storage()[0]);
 			} else if (dtype == "int32_t") {
 				lrc::Array<int32_t> lhs(shape);
 				lrc::Array<int32_t> rhs(shape);
 				lrc::Array<int32_t> res(shape);
-				bench = timeFunction([&]() { res = lhs + rhs; }, samples, iters, time);
+				bench = timeFunction([&res, &lhs, &rhs]() { res = lhs + rhs; }, samples, iters, time);
 				fmt::print("Preventing Optimisation: {}\n", res.storage()[0]);
 			} else if (dtype == "i64") {
 				lrc::Array<int64_t> lhs(shape);

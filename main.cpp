@@ -81,7 +81,7 @@ int main() {
 #else
 	json::json sizes;
 	for (size_t i = 10; i <= 1000; i += 10) { sizes.push_back({i, i}); }
-	double time = 0.1;
+	double time = 1;
 #endif // USING_GITHUB_ACTIONS
 
 	json::json config {{"librapid",
@@ -110,6 +110,16 @@ int main() {
 	fmt::print("{}\n", tableToString(arithmeticResults));
 
 	saveTableToFile("arithmeticResults.txt", arithmeticResults);
+
+#if defined(LIBRAPID_OPTIMISE_SMALL_ARRAYS)
+	fmt::print("Small array optimisation enabled\n");
+#endif
+
+	xt::xarray<float> a({{1, 2, 3}, {4, 5, 6}});
+	xt::xarray<float> b({{1, 2, 3}, {4, 5, 6}});
+	xt::xarray<float> c = a + b;
+	c = a + b;
+	auto func = a + b;
 
 	return 0;
 }

@@ -6,11 +6,11 @@ set(CMAKE_CXX_STANDARD 17)
 option(USING_GITHUB_ACTIONS "Using Github Actions" OFF)
 
 # Set some options
-set(XTENSOR_USE_XSIMD on)
-set(XTENSOR_USE_OPENMP on)
-set(XTENSOR_USE_FLENS_BLAS on)
+set(XTENSOR_USE_XSIMD ON)
+set(XTENSOR_USE_OPENMP ON)
+set(XTENSOR_USE_FLENS_BLAS ON)
 
-set(LIBRAPID_OPTIMISE_SMALL_ARRAYS on)
+set(LIBRAPID_OPTIMISE_SMALL_ARRAYS ON)
 
 # Add the required libraries
 add_subdirectory(lib/librapid)
