@@ -27,28 +27,13 @@ jobs:
         uses: lukka/get-cmake@latest
 
       - name: Update Libraries
+        continue-on-error: true
         run: |
           cd lib
           
-          cd eigen
-          git pull origin master
-          cd ..
-          
           cd librapid
-          git pull origin master
-          cd ..
-          
-          cd xsimd
-          git pull origin master
-          cd ..
-          
-          cd xtensor
-          git pull origin master
-          cd ..
-          
-          cd xtl
-          git pull origin master
-          cd ..
+          git checkout master
+          git pull
 
       - name: Build the Benchmarks
         run: |
