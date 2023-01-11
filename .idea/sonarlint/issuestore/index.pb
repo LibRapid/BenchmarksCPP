@@ -9,3 +9,15 @@
 -lib/xsimd/include/xsimd/config/xsimd_arch.hpp,6\8\68bd421e2c04ce4544e7f13308b134d981594a7d
 X
 (lib/xtensor/include/xtensor/xstrides.hpp,c\a\ca9b8b54b07a58fcf9d80ca7bfde0fa5b6f1d6fc
+W
+'lib/xtensor/include/xtensor/xassign.hpp,3\6\364abf5679021f18ed87ef085908e76ed67af161
+Y
+)lib/xtensor/include/xtensor/xfunction.hpp,4\4\44def22b1c4c356b0f0c430dcd04e41896463672
+V
+&lib/xtensor/include/xtensor/xutils.hpp,0\6\06bc3e718e3886289e7254dc54a6572864892e50
+Z
+*lib/xtensor/include/xtensor/xoperation.hpp,f\6\f654aab1a6371a8b5af7d8ef2029a72f2a64f527
+X
+(benchmarks/src/arithmeticPreallocate.cpp,8\c\8cc2dc9834b555059a6d6600c2828a007e5482e6
+8
+main.cpp,6\8\682a50d19e416195436708e48c7761923b8d6651

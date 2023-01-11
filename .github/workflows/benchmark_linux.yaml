@@ -1,6 +1,12 @@
 name: Run Benchmarks (Linux)
 
 on:
+  push:
+      branches:
+      - master
+  pull_request:
+      branches:
+      - master
   schedule:
     # Every day at 00:00
     - cron: '0 0 * * *'
@@ -41,6 +47,9 @@ jobs:
           cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release -DUSING_GITHUB_ACTIONS=ON
           cmake --build . --config Release
+        env:
+          CC = gcc-11
+          CXX = g++-11          
 
       - name: Run Benchmark
         run: |

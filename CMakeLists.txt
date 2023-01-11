@@ -13,11 +13,11 @@ set(XTENSOR_USE_FLENS_BLAS ON)
 set(LIBRAPID_OPTIMISE_SMALL_ARRAYS ON)
 
 # Add the required libraries
-add_subdirectory(lib/librapid)
 add_subdirectory(lib/eigen)
 add_subdirectory(lib/xtl)
 add_subdirectory(lib/xsimd)
 add_subdirectory(lib/xtensor)
+add_subdirectory(lib/librapid)
 
 file(GLOB BENCHMARK_SOURCE_FILES
         "${CMAKE_CURRENT_SOURCE_DIR}/benchmarks/src/*.cpp"

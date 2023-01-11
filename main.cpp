@@ -67,6 +67,11 @@ json::json arithmetic(const json::json &config) {
 	return arithmeticResults;
 }
 
+template<typename T>
+void printArrayThing(const xt::xarray<T> &arr) {
+	std::cout << arr << "\n";
+}
+
 int main() {
 #if defined(LIBRAPID_OPTIMISE_SMALL_ARRAYS)
 	fmt::print("Small arrays optimised\n");
@@ -80,7 +85,7 @@ int main() {
 	double time = 2.5;
 #else
 	json::json sizes;
-	for (size_t i = 10; i <= 1000; i += 10) { sizes.push_back({i, i}); }
+	for (size_t i = 50; i <= 1000; i += 50) { sizes.push_back({i, i}); }
 	double time = 1;
 #endif // USING_GITHUB_ACTIONS
 
