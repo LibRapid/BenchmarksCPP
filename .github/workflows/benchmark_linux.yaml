@@ -36,7 +36,6 @@ jobs:
         continue-on-error: true
         run: |
           cd lib
-          
           cd librapid
           git checkout master
           git pull
@@ -45,11 +44,11 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release -DUSING_GITHUB_ACTIONS=ON
+          cmake .. -DUSING_GITHUB_ACTIONS=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 -DLIBRAPID_GET_BLAS=on -DLIBRAPID_USE_MULTIPREC=on
           cmake --build . --config Release
         env:
-          CC = gcc-11
-          CXX = g++-11          
+          CC: gcc-11
+          CXX: g++-11          
 
       - name: Run Benchmark
         run: |
