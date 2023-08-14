@@ -6,13 +6,6 @@
  # xtensor::xtl
 	path = lib/xtl
 	url = https://github.com/xtensor-stack/xtl.git
-[submodule "lib/xsimd"] # xtensor::xtl
- # xtensor::xtl
- # xtensor::xtl
- # xtensor::xtl
- # xtensor::xtl
-	path = lib/xsimd
-	url = https://github.com/xtensor-stack/xsimd.git
 [submodule "lib/xtensor"]
 	path = lib/xtensor
 	url = https://github.com/xtensor-stack/xtensor.git
