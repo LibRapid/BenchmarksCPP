@@ -6,8 +6,3 @@
  # xtensor::xtl
 	path = lib/xtl
 	url = https://github.com/xtensor-stack/xtl.git
-[submodule "lib/xtensor"]
-	path = lib/xtensor
-	url = https://github.com/xtensor-stack/xtensor.git
-
-# JSON for Modern C++
