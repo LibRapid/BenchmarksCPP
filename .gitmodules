@@ -18,6 +18,3 @@
 	url = https://github.com/xtensor-stack/xtensor.git
 
 # JSON for Modern C++
-[submodule "lib/nanobench"]
-	path = lib/nanobench
-	url = https://github.com/martinus/nanobench.git
