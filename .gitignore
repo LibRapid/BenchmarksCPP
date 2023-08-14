@@ -14,3 +14,7 @@ _deps
 
 cmake-build-*
 build
+
+.PVS-Studio
+
+build
