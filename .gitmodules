@@ -1,8 +1,1 @@
 # ------------ LibRapid ----------------------------------
-[submodule "lib/xtl"] # xtensor::xtl
- # xtensor::xtl
- # xtensor::xtl
- # xtensor::xtl
- # xtensor::xtl
-	path = lib/xtl
-	url = https://github.com/xtensor-stack/xtl.git
