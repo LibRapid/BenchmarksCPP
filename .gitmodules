@@ -1,13 +1,4 @@
 # ------------ LibRapid ----------------------------------
-[submodule "lib/eigen"] # Eigen
- # Eigen
- # Eigen
- # Eigen
- # Eigen
-	path = lib/eigen
-	url = https://gitlab.com/libeigen/eigen.git
-
-# ------------ xtensor -----------------------------------
 [submodule "lib/xtl"] # xtensor::xtl
  # xtensor::xtl
  # xtensor::xtl
