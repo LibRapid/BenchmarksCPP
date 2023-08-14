@@ -27,9 +27,6 @@
 	url = https://github.com/xtensor-stack/xtensor.git
 
 # JSON for Modern C++
-[submodule "lib/librapid"]
-	path = lib/librapid
-	url = https://github.com/LibRapid/librapid.git
 [submodule "lib/nanobench"]
 	path = lib/nanobench
 	url = https://github.com/martinus/nanobench.git
