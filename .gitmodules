@@ -2,6 +2,8 @@
 [submodule "lib/eigen"] # Eigen
  # Eigen
  # Eigen
+ # Eigen
+ # Eigen
 	path = lib/eigen
 	url = https://gitlab.com/libeigen/eigen.git
 
@@ -9,9 +11,13 @@
 [submodule "lib/xtl"] # xtensor::xtl
  # xtensor::xtl
  # xtensor::xtl
+ # xtensor::xtl
+ # xtensor::xtl
 	path = lib/xtl
 	url = https://github.com/xtensor-stack/xtl.git
 [submodule "lib/xsimd"] # xtensor::xtl
+ # xtensor::xtl
+ # xtensor::xtl
  # xtensor::xtl
  # xtensor::xtl
 	path = lib/xsimd
@@ -24,3 +30,6 @@
 [submodule "lib/librapid"]
 	path = lib/librapid
 	url = https://github.com/LibRapid/librapid.git
+[submodule "lib/nanobench"]
+	path = lib/nanobench
+	url = https://github.com/martinus/nanobench.git
