@@ -14,3 +14,9 @@
 #include <xtensor/xview.hpp>
 
 #include <nanobench.h>
+
+using namespace ankerl;
+
+#include "config.hpp"
+#include "trivialOperations.hpp"
+#include "combinedTrivialOperations.hpp"

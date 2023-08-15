@@ -1,1 +1,16 @@
 # ------------ LibRapid ----------------------------------
+[submodule "vendor/librapid"]
+	path = vendor/librapid
+	url = https://github.com/LibRapid/librapid.git
+[submodule "vendor/eigen"]
+	path = vendor/eigen
+	url = https://gitlab.com/libeigen/eigen.git
+[submodule "vendor/nanobench"]
+	path = vendor/nanobench
+	url = https://github.com/martinus/nanobench.git
+[submodule "vendor/xtensor"]
+	path = vendor/xtensor
+	url = https://github.com/xtensor-stack/xtensor.git
+[submodule "vendor/xtl"]
+	path = vendor/xtl
+	url = https://github.com/xtensor-stack/xtl.git
