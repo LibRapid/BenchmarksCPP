@@ -189,6 +189,7 @@ def processRuns(runs, graphingMode_=graphingMode, relativeTo_=relativeTo):
 def generateGraphs(data, showGraphs_=showGraphs, outputDir_=outputDir):
     # Split the data by the number of threads used
     threadSet = set([element["threads"] for element in data])
+    opName = data[0]["operation"]
 
     for threads in threadSet:
         verbosePrint("Generating graph for " + threads + " threads...")
@@ -233,7 +234,7 @@ def generateGraphs(data, showGraphs_=showGraphs, outputDir_=outputDir):
                 os.makedirs(outputDir_)
 
             verbosePrint("Saving graph for " + threads + " threads...")
-            plt.savefig(f"{outputDir_}/bench_{threads}.png")
+            plt.savefig(f"{outputDir_}/bench_{opName}_{threads}.png")
 
         if showGraphs_:
             verbosePrint("Showing graph for " + threads + " threads...")

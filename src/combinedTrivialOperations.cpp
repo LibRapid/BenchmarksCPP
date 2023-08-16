@@ -18,7 +18,7 @@ namespace bench {
         int64_t maxSize = 1ll << 14; // 16384
 
 #if defined(LIBRAPID_OPTIMISE_SMALL_ARRAYS)
-        double benchTime = 1.0; // seconds
+        double benchTime = 0.75; // seconds
 #else
         double benchTime = 0.1; // seconds
 #endif // LIBRAPID_OPTIMISE_SMALL_ARRAYS
