@@ -5,7 +5,4 @@
       <configuration sdkName="C:\opt\Anaconda3" />
     </facet>
   </component>
-  <component name="SonarLintModuleSettings">
-    <option name="uniqueId" value="97397a34-80ee-4a87-8c79-d4e6b88782b8" />
-  </component>
 </module>
