@@ -42,14 +42,38 @@ namespace bench {
                     librapid::Array<float> f(librapid::Shape({size, size}));
                     librapid::Array<float> g(librapid::Shape({size, size}));
                     librapid::Array<float> h(librapid::Shape({size, size}));
+                    librapid::Array<float> i(librapid::Shape({size, size}));
 
                     benchmarker.run(
                       fmt::format("LibRapid | Combined Array Operations | {0}x{0} | {1}_threads",
                                   size,
                                   threads),
                       [&] {
-                          h = (a + b) * (c + d) + (e + f) * (g + h);
-                          nanobench::doNotOptimizeAway(h);
+                          i = (a + b) * (c + d) + (e + f) * (g + h);
+                          nanobench::doNotOptimizeAway(i);
+                      });
+                }
+
+                {
+                    // LibRapid Array Addition
+                    librapid::Matrix<float> a(librapid::MatrixShape({size, size}));
+                    librapid::Matrix<float> b(librapid::MatrixShape({size, size}));
+                    librapid::Matrix<float> c(librapid::MatrixShape({size, size}));
+                    librapid::Matrix<float> d(librapid::MatrixShape({size, size}));
+                    librapid::Matrix<float> e(librapid::MatrixShape({size, size}));
+                    librapid::Matrix<float> f(librapid::MatrixShape({size, size}));
+                    librapid::Matrix<float> g(librapid::MatrixShape({size, size}));
+                    librapid::Matrix<float> h(librapid::MatrixShape({size, size}));
+                    librapid::Matrix<float> i(librapid::MatrixShape({size, size}));
+
+                    benchmarker.run(
+                      fmt::format(
+                        "LibRapid (Matrix) | Combined Array Operations | {0}x{0} | {1}_threads",
+                        size,
+                        threads),
+                      [&] {
+                          i = (a + b) * (c + d) + (e + f) * (g + h);
+                          nanobench::doNotOptimizeAway(i);
                       });
                 }
 
@@ -63,12 +87,14 @@ namespace bench {
                     Eigen::Array<float, Eigen::Dynamic, Eigen::Dynamic> f(size, size);
                     Eigen::Array<float, Eigen::Dynamic, Eigen::Dynamic> g(size, size);
                     Eigen::Array<float, Eigen::Dynamic, Eigen::Dynamic> h(size, size);
+                    Eigen::Array<float, Eigen::Dynamic, Eigen::Dynamic> i(size, size);
 
                     benchmarker.run(
-                      fmt::format("Eigen | Combined Array Operations | {0}x{0} | {1}_threads", size, threads),
+                      fmt::format(
+                        "Eigen | Combined Array Operations | {0}x{0} | {1}_threads", size, threads),
                       [&] {
-                          h = (a + b) * (c + d) + (e + f) * (g + h);
-                          nanobench::doNotOptimizeAway(h);
+                          i = (a + b) * (c + d) + (e + f) * (g + h);
+                          nanobench::doNotOptimizeAway(i);
                       });
                 }
 
@@ -82,14 +108,16 @@ namespace bench {
                     xt::xarray<float> f = xt::zeros<float>({size, size});
                     xt::xarray<float> g = xt::zeros<float>({size, size});
                     xt::xarray<float> h = xt::zeros<float>({size, size});
+                    xt::xarray<float> i = xt::zeros<float>({size, size});
 
-                    benchmarker.run(fmt::format("XTensor | Combined Array Operations | {0}x{0} | {1}_threads",
-                                                size,
-                                                threads),
-                                    [&] {
-                                        h = (a + b) * (c + d) + (e + f) * (g + h);
-                                        nanobench::doNotOptimizeAway(h);
-                                    });
+                    benchmarker.run(
+                      fmt::format("XTensor | Combined Array Operations | {0}x{0} | {1}_threads",
+                                  size,
+                                  threads),
+                      [&] {
+                          i = (a + b) * (c + d) + (e + f) * (g + h);
+                          nanobench::doNotOptimizeAway(i);
+                      });
                 }
             }
         }

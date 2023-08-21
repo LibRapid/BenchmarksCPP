@@ -20,4 +20,5 @@ build
 build
 
 scripts/output
+scripts/output*
 scripts/test*

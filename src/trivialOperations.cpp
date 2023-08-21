@@ -48,6 +48,22 @@ namespace bench {
                 }
 
                 {
+                    // LibRapid Array Addition
+                    librapid::Matrix<float> a(librapid::MatrixShape({size, size}));
+                    librapid::Matrix<float> b(librapid::MatrixShape({size, size}));
+                    librapid::Matrix<float> c(librapid::MatrixShape({size, size}));
+
+                    benchmarker.run(
+                      fmt::format("LibRapid (Matrix) | Array Addition | {0}x{0} | {1}_threads",
+                                  size,
+                                  threads),
+                      [&] {
+                          c = a + b;
+                          nanobench::doNotOptimizeAway(c);
+                      });
+                }
+
+                {
                     // Eigen Array Addition
                     Eigen::Array<float, Eigen::Dynamic, Eigen::Dynamic> a(size, size);
                     Eigen::Array<float, Eigen::Dynamic, Eigen::Dynamic> b(size, size);

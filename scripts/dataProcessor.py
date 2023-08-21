@@ -44,7 +44,7 @@ if args.relative is not None and args.absolute is not None:
     exit(1)
 
 if args.relative is None and args.absolute is None:
-    graphingMode = "relative"
+    graphingMode = "absolute"
 
 if args.relative is not None:
     graphingMode = "relative"
