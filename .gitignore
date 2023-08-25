@@ -17,8 +17,4 @@ build
 
 .PVS-Studio
 
-build
-
-scripts/output
-scripts/output*
-scripts/test*
+scripts/*.png

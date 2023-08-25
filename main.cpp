@@ -7,13 +7,17 @@ auto main() -> int {
     // librapid::Array<float> warmup(librapid::Shape({2048, 2048}), 0.01);
     // for (int i = 0; i < 10000; ++i) { warmup += warmup; }
 
-    auto trivialOperations = bench::trivialOperations();
-    std::ofstream trivialOperationsFile("trivialOperations.csv");
-    trivialOperations.render(nanobench::templates::csv(), trivialOperationsFile);
+    // auto trivialOperations = bench::trivialOperations();
+    // std::ofstream trivialOperationsFile("trivialOperations.csv");
+    // trivialOperations.render(nanobench::templates::csv(), trivialOperationsFile);
 
-    auto combinedTrivialOperations = bench::combinedTrivialOperations();
-    std::ofstream combinedTrivialOperationsFile("combinedTrivialOperations.csv");
-    combinedTrivialOperations.render(nanobench::templates::csv(), combinedTrivialOperationsFile);
+    // auto combinedTrivialOperations = bench::combinedTrivialOperations();
+    // std::ofstream combinedTrivialOperationsFile("combinedTrivialOperations.csv");
+    // combinedTrivialOperations.render(nanobench::templates::csv(), combinedTrivialOperationsFile);
+
+    auto linearAlgebra = bench::linearAlgebra();
+    std::ofstream linearAlgebraFile("linearAlgebra.csv");
+    linearAlgebra.render(nanobench::templates::csv(), linearAlgebraFile);
 
     // auto sanityCheckA = librapid::Array<float>::fromData({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
     // auto sanityCheckB = librapid::Array<float>::fromData({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});

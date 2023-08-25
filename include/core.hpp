@@ -20,3 +20,4 @@ using namespace ankerl;
 #include "config.hpp"
 #include "trivialOperations.hpp"
 #include "combinedTrivialOperations.hpp"
+#include "linearAlgebra.hpp"

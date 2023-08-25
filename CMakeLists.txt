@@ -12,7 +12,7 @@ set(XTENSOR_USE_FLENS_BLAS ON)
 
 # If this is running in GitHub Actions, the options will be set by the workflow
 if (NOT USING_GITHUB_ACTIONS)
-    set(LIBRAPID_OPTIMISE_SMALL_ARRAYS ON)
+    set(LIBRAPID_OPTIMISE_SMALL_ARRAYS OFF)
     set(LIBRAPID_BUILD_EXAMPLES OFF)
     set(LIBRAPID_BUILD_TESTS OFF)
     set(LIBRAPID_CODE_COV OFF)
