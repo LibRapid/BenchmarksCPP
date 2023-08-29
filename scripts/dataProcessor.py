@@ -15,6 +15,7 @@ parser.add_argument("-a", "--absolute", help="Plot results absolute to a given l
 parser.add_argument("-l", "--log", help="Plot results on a logarithmic scale.", action="store_true", required=False)
 parser.add_argument("-s", "--show", help="Show the plots after processing.", action="store_true", required=False)
 parser.add_argument("-v", "--verbose", help="Show verbose output.", action="store_true", required=False)
+parser.add_argument("-d", "--directory", help="Generate graphs for all *.csv files in the given directory.", required=False)
 
 args = parser.parse_args()
 
@@ -25,9 +26,10 @@ showGraphs = None  # Whether to show the graphs after processing
 relativeTo = None  # The library to use as a reference for relative graphing
 verbose = None  # Whether to show verbose output
 logPlot = None  # Whether to plot the results on a logarithmic scale
+directoryMode = None  # Whether to process all *.csv files in the given directory
 
-if args.input is None:
-    print("No input file specified.")
+if args.input is None and args.directory is None:
+    print("No input file or directory specified.")
     exit(1)
 else:
     inputFile = args.input
@@ -53,6 +55,11 @@ if args.relative is not None:
 if args.absolute is not None:
     graphingMode = "absolute"
     relativeTo = args.absolute
+
+if args.directory is not None:
+    directoryMode = args.directory
+else:
+    directoryMode = False
 
 logPlot = args.log
 showGraphs = args.show
@@ -241,7 +248,16 @@ def generateGraphs(data, showGraphs_=showGraphs, outputDir_=outputDir):
             plt.show()
 
 
-data = readFile()
-runs = extractRuns(data)
-processed = processRuns(runs)
-generateGraphs(processed)
+def run(fileName):
+    data = readFile(fileName)
+    runs = extractRuns(data)
+    processed = processRuns(runs)
+    generateGraphs(processed)
+
+
+if directoryMode:
+    for fileName in os.listdir(directoryMode):
+        if fileName.endswith(".csv"):
+            run(directoryMode + "/" + fileName)
+else:
+    run(inputFile)

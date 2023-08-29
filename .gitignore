@@ -17,4 +17,4 @@ build
 
 .PVS-Studio
 
-scripts/*.png
+scripts/**/*.png
