@@ -1,7 +1,7 @@
 #include "include/core.hpp"
 
 namespace bench {
-    nanobench::Bench combinedTrivialOperations() {
+    nanobench::Bench combinedTrivialOperations(const std::vector<int64_t> &sizes) {
         nanobench::Bench benchmarker;
 
         int64_t minThreads = 1;
@@ -14,9 +14,6 @@ namespace bench {
         int64_t maxThreads = std::thread::hardware_concurrency();
 #endif // LIBRAPID_OPTIMISE_SMALL_ARRAYS
 
-        int64_t minSize = 1ll << 3;  // 8
-        int64_t maxSize = 1ll << 14; // 16384
-
 #if defined(LIBRAPID_OPTIMISE_SMALL_ARRAYS)
         double benchTime = 0.75; // seconds
 #else
@@ -27,7 +24,7 @@ namespace bench {
           std::chrono::milliseconds(static_cast<int64_t>(benchTime * 1000.0))));
 
         for (int64_t threads = minThreads; threads <= maxThreads; ++threads) {
-            for (int64_t size = minSize; size <= maxSize; size <<= 1) {
+            for (const auto &size: sizes) {
                 // Set num threads
                 librapid::setNumThreads(threads);
                 Eigen::setNbThreads(threads);

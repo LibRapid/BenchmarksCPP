@@ -31,7 +31,6 @@ set(LIBRAPID_CUDA_DOUBLE_VECTOR_WIDTH 4)
 set(LIBRAPID_GET_FFTW ON)
 set(LIBRAPID_GET_BLAS ON)
 set(LIBRAPID_GET_MULTIPREC ON)
-set(LIBRAPID_NO_WINDOWS_H ON)
 
 # Add the required libraries
 add_subdirectory(vendor/librapid)
