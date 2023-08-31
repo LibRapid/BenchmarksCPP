@@ -156,6 +156,10 @@ for root, dirs, files in os.walk(args.input):
 
         for file in files:
             fileInfo = parseFileName(file)
+            if fileInfo is None:
+                printError(f"Invalid Directory: {root}/{file}")
+                continue
+
             outputFileName = os.path.join(outputDirectoryName, fileInfo["operation"]) + ".md"
             ensureFileExists(outputFileName)
 
