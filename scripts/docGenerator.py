@@ -17,6 +17,7 @@ parser.add_argument("-o", "--output", help="Output Directory", required=False, t
 
 args = parser.parse_args()
 
+
 def printLog(*args, **kwargs):
     print(colorama.Fore.CYAN, end="")
     print(*args, **kwargs)
@@ -145,6 +146,7 @@ def generateMarkdownListings(rootDir, recurse=True, depth=0):
         else:
             file.write(generateMarkdownToctree(rootName, mdLinks))
 
+
 def shouldSkip(directory):
     rootName = os.path.basename(directory)
     return rootName.lower() in EXCLUDE_DIRS
@@ -156,7 +158,7 @@ printLog(f"Output Directory: {args.output}")
 for root, dirs, files in os.walk(args.input):
     # print(f"Root: {root}, Dirs: {dirs}, Files: {files}")
     dirInfo = parseDirectoryName(root)
-    if dirInfo is not None and not shouldSkip(dirInfo):
+    if dirInfo is not None and not shouldSkip(root):
         outputDirectoryName = os.path.join(os.path.join(args.output, "BenchmarkResults"),
                                            dirInfo["os"],
                                            dirInfo["compiler"],
