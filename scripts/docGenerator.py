@@ -3,6 +3,11 @@ import argparse
 import colorama
 import shutil
 
+EXCLUDE_DIRS = [
+    "documentation",
+    "sphinx"
+]
+
 # Set up the argument parser
 parser = argparse.ArgumentParser(description='Run the main program.')
 
@@ -11,7 +16,6 @@ parser.add_argument("-i", "--input", help="Input Directory", required=False, typ
 parser.add_argument("-o", "--output", help="Output Directory", required=False, type=str, dest="output", default="BenchmarkResults")
 
 args = parser.parse_args()
-
 
 def printLog(*args, **kwargs):
     print(colorama.Fore.CYAN, end="")
@@ -134,11 +138,16 @@ def generateMarkdownListings(rootDir, recurse=True, depth=0):
 
     print(f"Writing {rootDir + '.md'}")
     with open(rootDir + ".md", "w") as file:
+        mdLinks = [f"{rootName}/{file}" for file in mdFiles]
         if depth == 1:
             file.write(loadBenchmarkPreamble())
-            file.write(generateMarkdownToctree("Operating Systems", mdFiles))
+            file.write(generateMarkdownToctree("Operating Systems", mdLinks))
         else:
-            file.write(generateMarkdownToctree(rootName, mdFiles))
+            file.write(generateMarkdownToctree(rootName, mdLinks))
+
+def shouldSkip(directory):
+    rootName = os.path.basename(directory)
+    return rootName.lower() in EXCLUDE_DIRS
 
 
 printLog(f"Input Directory: {args.input}")
@@ -147,7 +156,7 @@ printLog(f"Output Directory: {args.output}")
 for root, dirs, files in os.walk(args.input):
     # print(f"Root: {root}, Dirs: {dirs}, Files: {files}")
     dirInfo = parseDirectoryName(root)
-    if dirInfo is not None:
+    if dirInfo is not None and not shouldSkip(dirInfo):
         outputDirectoryName = os.path.join(os.path.join(args.output, "BenchmarkResults"),
                                            dirInfo["os"],
                                            dirInfo["compiler"],
@@ -170,5 +179,7 @@ for root, dirs, files in os.walk(args.input):
             with open(outputFileName, "a") as f:
                 f.write(f"# {fileInfo['operation']}")
                 f.write(generateMarkdownForFile(fileInfo, showTitle=not dirInfo["smallArrays"]))
+    else:
+        printWarning(f"Invalid Directory: {root}")
 
 generateMarkdownListings(args.output)
