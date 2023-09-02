@@ -96,7 +96,6 @@ def generateMarkdownToctree(title, items):
 # {title}
 
 ```{{toctree}}
-:hidden:
 :maxdepth: 4
 
 {nlItems}
