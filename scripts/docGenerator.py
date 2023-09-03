@@ -103,10 +103,16 @@ def generateMarkdownToctree(title, items):
 """
 
 
+def processFileName(filename):
+    # Markdown links do not like spaces, so replace them with '%20'
+
+    return filename.replace(" ", "%20")
+
+
 def generateMarkdownForFile(fileInfo, showTitle=True):
     title = f"{fileInfo['numThreads']} {'thread' if fileInfo['numThreads'] == '1' else 'threads'}"
     warning = loadWarning()
-    image = f"![{fileInfo['file']}]({fileInfo['file']})"
+    image = f"![{fileInfo['file']}]({processFileName(fileInfo['file'])})"
 
     return f"""
 {f'## {title}' if showTitle else "## (Optimised for Small Arrays)"}
