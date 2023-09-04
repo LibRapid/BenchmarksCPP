@@ -170,7 +170,7 @@ for root, dirs, files in os.walk(args.input):
                                            "OPTIMISE_SMALL_ARRAYS=ON" if dirInfo["smallArrays"] else "OPTIMISE_SMALL_ARRAYS=OFF")
         ensureDirectoryExists(outputDirectoryName)
 
-        for file in files:
+        for file in sorted(files):
             fileInfo = parseFileName(file)
             if fileInfo is None:
                 printError(f"Invalid Directory: {root}/{file}")

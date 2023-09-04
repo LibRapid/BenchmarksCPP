@@ -3,6 +3,10 @@
 auto main() -> int {
     std::cout << "Hello, World!" << std::endl;
 
+#ifdef LIBRAPID_HAS_OPENCL
+    librapid::configureOpenCL(true);
+#endif
+
     auto tmpSizes = librapid::logspace(4, 5590.2, 10);
     std::vector<int64_t> sizes(tmpSizes.storage().begin(), tmpSizes.storage().end());
 

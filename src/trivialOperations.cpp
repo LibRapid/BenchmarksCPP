@@ -60,6 +60,47 @@ namespace bench {
                       });
                 }
 
+#ifdef LIBRAPID_HAS_OPENCL
+                {
+                    // LibRapid Array Addition
+                    librapid::Array<float, librapid::backend::OpenCL> a(
+                      librapid::Shape({size, size}));
+                    librapid::Array<float, librapid::backend::OpenCL> b(
+                      librapid::Shape({size, size}));
+                    librapid::Array<float, librapid::backend::OpenCL> c(
+                      librapid::Shape({size, size}));
+
+                    benchmarker.run(
+                      fmt::format("LibRapid (OpenCL) | Array Addition | {0}x{0} | {1}_threads",
+                                  size,
+                                  threads),
+                      [&] {
+                          c = a + b;
+                          nanobench::doNotOptimizeAway(c);
+                      });
+                }
+#endif
+
+#ifdef LIBRAPID_HAS_CUDA
+                {
+                    // LibRapid Array Addition
+                    librapid::Array<float, librapid::backend::CUDA> a(
+                      librapid::Shape({size, size}));
+                    librapid::Array<float, librapid::backend::CUDA> b(
+                      librapid::Shape({size, size}));
+                    librapid::Array<float, librapid::backend::CUDA> c(
+                      librapid::Shape({size, size}));
+
+                    benchmarker.run(
+                      fmt::format(
+                        "LibRapid (CUDA) | Array Addition | {0}x{0} | {1}_threads", size, threads),
+                      [&] {
+                          c = a + b;
+                          nanobench::doNotOptimizeAway(c);
+                      });
+                }
+#endif
+
                 {
                     // Eigen Array Addition
                     Eigen::Array<float, Eigen::Dynamic, Eigen::Dynamic> a(size, size);
