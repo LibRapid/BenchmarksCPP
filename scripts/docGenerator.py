@@ -93,26 +93,24 @@ def generateMarkdownToctree(title, items):
     nlItems = "\n".join(items)
 
     return f"""
-# {title}
+## {title}
 
 ```{{toctree}}
-:maxdepth: 4
+:maxdepth: 2
 
 {nlItems}
 ```
 """
 
 
-def processFileName(filename):
-    # Markdown links do not like spaces, so replace them with '%20'
-
-    return filename.replace(" ", "%20")
+def removeSpaces(filename, replacement=""):
+    return filename.replace(" ", replacement)
 
 
 def generateMarkdownForFile(fileInfo, showTitle=True):
     title = f"{fileInfo['numThreads']} {'thread' if fileInfo['numThreads'] == '1' else 'threads'}"
     warning = loadWarning()
-    image = f"![{fileInfo['file']}]({processFileName(fileInfo['file'])})"
+    image = f"![Benchmark Result | {fileInfo['operation']} | {fileInfo['numThreads']} threads]({removeSpaces(fileInfo['file'])})"
 
     return f"""
 {f'## {title}' if showTitle else "## (Optimised for Small Arrays)"}
@@ -160,6 +158,8 @@ def shouldSkip(directory):
 printLog(f"Input Directory: {args.input}")
 printLog(f"Output Directory: {args.output}")
 
+titled = {}
+
 for root, dirs, files in os.walk(args.input):
     # print(f"Root: {root}, Dirs: {dirs}, Files: {files}")
     dirInfo = parseDirectoryName(root)
@@ -177,14 +177,17 @@ for root, dirs, files in os.walk(args.input):
                 continue
 
             outputFileName = os.path.join(outputDirectoryName, fileInfo["operation"]) + ".md"
+            outputFileName = removeSpaces(outputFileName)
             ensureFileExists(outputFileName)
 
             # Copy file to output directory
-            shutil.copy(os.path.join(root, file), os.path.join(outputDirectoryName, file))
+            shutil.copy(os.path.join(root, file), removeSpaces(os.path.join(outputDirectoryName, file)))
 
             print(f"Writing {outputFileName}")
             with open(outputFileName, "a") as f:
-                f.write(f"# {fileInfo['operation']}")
+                if not titled.get(outputFileName, False):
+                    f.write(f"# {fileInfo['operation']}")
+                    titled[outputFileName] = True
                 f.write(generateMarkdownForFile(fileInfo, showTitle=not dirInfo["smallArrays"]))
     else:
         printWarning(f"Invalid Directory: {root}")
