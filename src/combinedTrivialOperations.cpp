@@ -15,7 +15,7 @@ namespace bench {
 #endif // LIBRAPID_OPTIMISE_SMALL_ARRAYS
 
 #if defined(LIBRAPID_OPTIMISE_SMALL_ARRAYS)
-        double benchTime = 0.75; // seconds
+        double benchTime = 0.05; // 0.75; // seconds
 #else
         double benchTime = 0.1; // seconds
 #endif // LIBRAPID_OPTIMISE_SMALL_ARRAYS

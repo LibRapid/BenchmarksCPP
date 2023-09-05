@@ -78,15 +78,18 @@ def parseDirectoryName(dirName):
 
 
 def parseFileName(filename):
-    # File names have the format: "bench_<Operation Name>_<Num Threads>_threads.png"
+    # File names have the format: "bench_<Operation Name>_<Num Threads>.png"
 
     out = filename.split("_")
-    if len(out) == 4:
+    if len(out) == 3:
         return {
             "file": filename,
             "operation": out[1],
             "numThreads": out[2]
         }
+
+    # Invalid file name (probably not a benchmark output)
+    return None
 
 
 def generateMarkdownToctree(title, items):
@@ -108,7 +111,7 @@ def removeSpaces(filename, replacement=""):
 
 
 def generateMarkdownForFile(fileInfo, showTitle=True):
-    title = f"{fileInfo['numThreads']} {'thread' if fileInfo['numThreads'] == '1' else 'threads'}" if fileInfo["numThreads"].isint() else fileInfo["numThreads"]
+    title = f"{fileInfo['numThreads']} {'thread' if fileInfo['numThreads'] == '1' else 'threads'}" if fileInfo["numThreads"].isnumeric() else fileInfo["numThreads"]
     warning = loadWarning()
     image = f"![Benchmark Result | {fileInfo['operation']} | {fileInfo['numThreads']} threads]({removeSpaces(fileInfo['file'])})"
 
