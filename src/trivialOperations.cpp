@@ -35,13 +35,13 @@ namespace bench {
                     librapid::Array<float> b(librapid::Shape({size, size}));
                     librapid::Array<float> c(librapid::Shape({size, size}));
 
-                    benchmarker.run(fmt::format("LibRapid | Array Addition | {0}x{0} | {1}_threads",
-                                                size,
-                                                threads),
-                                    [&] {
-                                        c = a + b;
-                                        nanobench::doNotOptimizeAway(c);
-                                    });
+                    benchmarker.run(
+                      fmt::format(
+                        "LibRapid | Array Addition | {0}x{0} | CPU | {1}_threads", size, threads),
+                      [&] {
+                          c = a + b;
+                          nanobench::doNotOptimizeAway(c);
+                      });
                 }
 
                 {
@@ -51,9 +51,10 @@ namespace bench {
                     librapid::Matrix<float> c(librapid::MatrixShape({size, size}));
 
                     benchmarker.run(
-                      fmt::format("LibRapid (Matrix) | Array Addition | {0}x{0} | {1}_threads",
-                                  size,
-                                  threads),
+                      fmt::format(
+                        "LibRapid (Matrix) | Array Addition | {0}x{0} | CPU | {1}_threads",
+                        size,
+                        threads),
                       [&] {
                           c = a + b;
                           nanobench::doNotOptimizeAway(c);
@@ -71,7 +72,7 @@ namespace bench {
                       librapid::Shape({size, size}));
 
                     benchmarker.run(
-                      fmt::format("LibRapid (OpenCL) | Array Addition | {0}x{0} | {1}_threads",
+                      fmt::format("LibRapid | Array Addition | {0}x{0} | OpenCL | {1}_threads",
                                   size,
                                   threads),
                       [&] {
@@ -93,7 +94,7 @@ namespace bench {
 
                     benchmarker.run(
                       fmt::format(
-                        "LibRapid (CUDA) | Array Addition | {0}x{0} | {1}_threads", size, threads),
+                        "LibRapid | Array Addition | {0}x{0} | CUDA | {1}_threads", size, threads),
                       [&] {
                           c = a + b;
                           nanobench::doNotOptimizeAway(c);
@@ -108,7 +109,8 @@ namespace bench {
                     Eigen::Array<float, Eigen::Dynamic, Eigen::Dynamic> c(size, size);
 
                     benchmarker.run(
-                      fmt::format("Eigen | Array Addition | {0}x{0} | {1}_threads", size, threads),
+                      fmt::format(
+                        "Eigen | Array Addition | {0}x{0} | CPU | {1}_threads", size, threads),
                       [&] {
                           c = a + b;
                           nanobench::doNotOptimizeAway(c);
@@ -121,13 +123,13 @@ namespace bench {
                     xt::xarray<float> b = xt::zeros<float>({size, size});
                     xt::xarray<float> c = xt::zeros<float>({size, size});
 
-                    benchmarker.run(fmt::format("XTensor | Array Addition | {0}x{0} | {1}_threads",
-                                                size,
-                                                threads),
-                                    [&] {
-                                        c = a + b;
-                                        nanobench::doNotOptimizeAway(c);
-                                    });
+                    benchmarker.run(
+                      fmt::format(
+                        "XTensor | Array Addition | {0}x{0} | CPU | {1}_threads", size, threads),
+                      [&] {
+                          c = a + b;
+                          nanobench::doNotOptimizeAway(c);
+                      });
                 }
             }
         }

@@ -7,7 +7,10 @@ auto main() -> int {
     librapid::configureOpenCL(true);
 #endif
 
-    auto tmpSizes = librapid::logspace(4, 5590.2, 10);
+    auto tmpSizes = librapid::logspace(4, 5592, 10); // I want to increase this, but the GitHub
+                                                     // servers can't handle it
+
+    // Convert to vector to eliminate any issues with LibRapid that may arise
     std::vector<int64_t> sizes(tmpSizes.storage().begin(), tmpSizes.storage().end());
 
     auto trivialOperations = bench::trivialOperations(sizes);

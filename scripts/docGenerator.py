@@ -108,7 +108,7 @@ def removeSpaces(filename, replacement=""):
 
 
 def generateMarkdownForFile(fileInfo, showTitle=True):
-    title = f"{fileInfo['numThreads']} {'thread' if fileInfo['numThreads'] == '1' else 'threads'}"
+    title = f"{fileInfo['numThreads']} {'thread' if fileInfo['numThreads'] == '1' else 'threads'}" if fileInfo["numThreads"].isint() else fileInfo["numThreads"]
     warning = loadWarning()
     image = f"![Benchmark Result | {fileInfo['operation']} | {fileInfo['numThreads']} threads]({removeSpaces(fileInfo['file'])})"
 
@@ -145,7 +145,7 @@ def generateMarkdownListings(rootDir, recurse=True, depth=0):
         mdLinks = [f"{rootName}/{file}" for file in mdFiles]
         if depth == 1:
             file.write(loadBenchmarkPreamble())
-            file.write(generateMarkdownToctree("Operating Systems", mdLinks))
+            file.write(generateMarkdownToctree("Benchmark Results", mdLinks))
         else:
             file.write(generateMarkdownToctree(rootName, mdLinks))
 

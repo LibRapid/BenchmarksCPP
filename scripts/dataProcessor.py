@@ -99,8 +99,8 @@ def extractRuns(data):
     for index, row in data.iterrows():
         verbosePrint("Extracting run: " + row["name"])
 
-        name = row["name"]  # Name is constructed as follows: "<Library> | <Operation> | <Size> | <Threads>"
-        library, operation, size, threads = name.split(" | ")
+        name = row["name"]  # Name is constructed as follows: "<Library> | <Operation> | <Size> | <Backend> | <Threads>"
+        library, operation, size, backend, threads = name.split(" | ")
 
         if opName is None:
             opName = operation
@@ -113,7 +113,8 @@ def extractRuns(data):
             "library": library,
             "operation": operation,
             "size": size,
-            "threads": threads,
+            "backend": backend,
+            "threads": threads[:-len("_threads")],
             "elapsed": row["elapsed"],
             "op/s": 1 / row["elapsed"],
             "error": row["error %"],
@@ -139,7 +140,7 @@ def processRuns(runs, graphingMode_=graphingMode, relativeTo_=relativeTo):
     result = []
 
     for run in runs:
-        verbosePrint("Processing run: " + run["library"] + " | " + run["operation"] + " | " + run["size"] + " | " + run["threads"])
+        verbosePrint("Processing run: " + run["library"] + " | " + run["operation"] + " | " + run["size"] + " | " + run["backend"] + " | " + run["threads"])
         if graphingMode_ == "absolute":
             result.append(run)
         elif graphingMode_ == "relative":
@@ -148,6 +149,7 @@ def processRuns(runs, graphingMode_=graphingMode, relativeTo_=relativeTo):
                     "library": run["library"],
                     "operation": run["operation"],
                     "size": run["size"],
+                    "backend": run["backend"],
                     "threads": run["threads"],
                     "elapsed": 1,
                     "op/s": 1,
@@ -176,6 +178,7 @@ def processRuns(runs, graphingMode_=graphingMode, relativeTo_=relativeTo):
                     "library": run["library"],
                     "operation": run["operation"],
                     "size": run["size"],
+                    "backend": run["backend"],
                     "threads": run["threads"],
                     "elapsed": relativeHelper("elapsed"),
                     "op/s": relativeHelper("op/s"),
@@ -188,7 +191,7 @@ def processRuns(runs, graphingMode_=graphingMode, relativeTo_=relativeTo):
             print("Error: invalid graphing mode specified.")
             exit(1)
 
-        verbosePrint("Processed run: " + run["library"] + " | " + run["operation"] + " | " + run["size"] + " | " + run["threads"])
+        verbosePrint("Processed run: " + run["library"] + " | " + run["operation"] + " | " + run["size"] + " | " + run["backend"] + " | " + run["threads"])
 
     return result
 
@@ -207,12 +210,13 @@ def generateGraphs(data, showGraphs_=showGraphs, outputDir_=outputDir):
         yVals = []
         errors = []
         for run in runs:
-            xVals.append(f"{run['library']} | {run['size']}")
+            threadStr = f"{run['threads']} {'Thread' if int(run['threads']) == 1 else 'Threads'}" if run["backend"] == "CPU" else ""
+            xVals.append(f"{run['library']} | {run['size']:>11} | {run['backend']:>6} | {threadStr:>11}")
             yVals.append(run["op/s"])
             errors.append(run["error"] * run["op/s"])
 
         # Insert empty elements to separate sizes
-        step = len(set([run["library"] for run in runs]))
+        step = len(set([run["library"] + run["backend"] for run in runs]))
         index = len(xVals) - step
         while index >= 0:
             xVals.insert(index, " " * index)
@@ -223,12 +227,16 @@ def generateGraphs(data, showGraphs_=showGraphs, outputDir_=outputDir):
         # Plot the data
         colors = cm.tab10(np.linspace(0, 1, step + 1))
 
-        plt.figure(figsize=(10, 10))
+        font = {'family': 'monospace',
+                'weight': 'normal',
+                'size': 12}
+
+        plt.figure(figsize=(15, 15))
         plt.bar(xVals, yVals, color=colors, align="center")
         plt.errorbar(xVals, yVals, yerr=errors, fmt="none", ecolor="red", capsize=3)
-        plt.xticks(rotation=90)
-        plt.ylabel("Operations/Second" + (" (Relative)" if graphingMode == "relative" else ""))
-        plt.xlabel("Library | Size")
+        plt.xticks(rotation=90, fontname="monospace")
+        plt.ylabel("Operations/Second" + (" (Relative)" if graphingMode == "relative" else ""), fontdict=font)
+        plt.xlabel("Library | Size | Backend | NumThreads", fontdict=font)
 
         if logPlot:
             plt.yscale("log")

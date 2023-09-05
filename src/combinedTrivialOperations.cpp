@@ -24,7 +24,7 @@ namespace bench {
           std::chrono::milliseconds(static_cast<int64_t>(benchTime * 1000.0))));
 
         for (int64_t threads = minThreads; threads <= maxThreads; ++threads) {
-            for (const auto &size: sizes) {
+            for (const auto &size : sizes) {
                 // Set num threads
                 librapid::setNumThreads(threads);
                 Eigen::setNbThreads(threads);
@@ -42,9 +42,10 @@ namespace bench {
                     librapid::Array<float> i(librapid::Shape({size, size}));
 
                     benchmarker.run(
-                      fmt::format("LibRapid | Combined Array Operations | {0}x{0} | {1}_threads",
-                                  size,
-                                  threads),
+                      fmt::format(
+                        "LibRapid | Combined Array Operations | {0}x{0} | CPU | {1}_threads",
+                        size,
+                        threads),
                       [&] {
                           i = (a + b) * (c + d) + (e + f) * (g + h);
                           nanobench::doNotOptimizeAway(i);
@@ -63,9 +64,76 @@ namespace bench {
                     librapid::Matrix<float> h(librapid::MatrixShape({size, size}));
                     librapid::Matrix<float> i(librapid::MatrixShape({size, size}));
 
+                    benchmarker.run(fmt::format("LibRapid (Matrix) | Combined Array Operations | "
+                                                "{0}x{0} | CPU | {1}_threads",
+                                                size,
+                                                threads),
+                                    [&] {
+                                        i = (a + b) * (c + d) + (e + f) * (g + h);
+                                        nanobench::doNotOptimizeAway(i);
+                                    });
+                }
+
+#ifdef LIBRAPID_HAS_OPENCL
+                {
+                    // LibRapid Array Addition
+                    librapid::Array<float, librapid::backend::OpenCL> a(
+                      librapid::Shape({size, size}));
+                    librapid::Array<float, librapid::backend::OpenCL> b(
+                      librapid::Shape({size, size}));
+                    librapid::Array<float, librapid::backend::OpenCL> c(
+                      librapid::Shape({size, size}));
+                    librapid::Array<float, librapid::backend::OpenCL> d(
+                      librapid::Shape({size, size}));
+                    librapid::Array<float, librapid::backend::OpenCL> e(
+                      librapid::Shape({size, size}));
+                    librapid::Array<float, librapid::backend::OpenCL> f(
+                      librapid::Shape({size, size}));
+                    librapid::Array<float, librapid::backend::OpenCL> g(
+                      librapid::Shape({size, size}));
+                    librapid::Array<float, librapid::backend::OpenCL> h(
+                      librapid::Shape({size, size}));
+                    librapid::Array<float, librapid::backend::OpenCL> i(
+                      librapid::Shape({size, size}));
+
                     benchmarker.run(
                       fmt::format(
-                        "LibRapid (Matrix) | Combined Array Operations | {0}x{0} | {1}_threads",
+                        "LibRapid | Combined Array Operations | {0}x{0} | OpenCL | {1}_threads",
+                        size,
+                        threads),
+
+                      [&] {
+                          i = (a + b) * (c + d) + (e + f) * (g + h);
+                          nanobench::doNotOptimizeAway(i);
+                      });
+                }
+#endif
+
+#ifdef LIBRAPID_HAS_CUDA
+                {
+                    // LibRapid Array Addition
+                    librapid::Array<float, librapid::backend::CUDA> a(
+                      librapid::Shape({size, size}));
+                    librapid::Array<float, librapid::backend::CUDA> b(
+                      librapid::Shape({size, size}));
+                    librapid::Array<float, librapid::backend::CUDA> c(
+                      librapid::Shape({size, size}));
+                    librapid::Array<float, librapid::backend::CUDA> d(
+                      librapid::Shape({size, size}));
+                    librapid::Array<float, librapid::backend::CUDA> e(
+                      librapid::Shape({size, size}));
+                    librapid::Array<float, librapid::backend::CUDA> f(
+                      librapid::Shape({size, size}));
+                    librapid::Array<float, librapid::backend::CUDA> g(
+                      librapid::Shape({size, size}));
+                    librapid::Array<float, librapid::backend::CUDA> h(
+                      librapid::Shape({size, size}));
+                    librapid::Array<float, librapid::backend::CUDA> i(
+                      librapid::Shape({size, size}));
+
+                    benchmarker.run(
+                      fmt::format(
+                        "LibRapid | Combined Array Operations | {0}x{0} | CUDA | {1}_threads",
                         size,
                         threads),
                       [&] {
@@ -73,6 +141,7 @@ namespace bench {
                           nanobench::doNotOptimizeAway(i);
                       });
                 }
+#endif
 
                 {
                     // Eigen Array Addition
@@ -87,8 +156,9 @@ namespace bench {
                     Eigen::Array<float, Eigen::Dynamic, Eigen::Dynamic> i(size, size);
 
                     benchmarker.run(
-                      fmt::format(
-                        "Eigen | Combined Array Operations | {0}x{0} | {1}_threads", size, threads),
+                      fmt::format("Eigen | Combined Array Operations | {0}x{0} | CPU | {1}_threads",
+                                  size,
+                                  threads),
                       [&] {
                           i = (a + b) * (c + d) + (e + f) * (g + h);
                           nanobench::doNotOptimizeAway(i);
@@ -108,9 +178,10 @@ namespace bench {
                     xt::xarray<float> i = xt::zeros<float>({size, size});
 
                     benchmarker.run(
-                      fmt::format("XTensor | Combined Array Operations | {0}x{0} | {1}_threads",
-                                  size,
-                                  threads),
+                      fmt::format(
+                        "XTensor | Combined Array Operations | {0}x{0} | CPU | {1}_threads",
+                        size,
+                        threads),
                       [&] {
                           i = (a + b) * (c + d) + (e + f) * (g + h);
                           nanobench::doNotOptimizeAway(i);

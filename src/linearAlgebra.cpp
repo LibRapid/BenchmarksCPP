@@ -36,7 +36,7 @@ namespace bench {
 
                     benchmarker.run(
                       fmt::format(
-                        "LibRapid | Matrix Transpose | {0}x{0} | {1}_threads", size, threads),
+                        "LibRapid | Matrix Transpose | {0}x{0} | CPU | {1}_threads", size, threads),
                       [&] {
                           b = librapid::transpose(a);
                           nanobench::doNotOptimizeAway(b);
@@ -49,7 +49,26 @@ namespace bench {
                     librapid::Matrix<float> b(librapid::MatrixShape({size, size}));
 
                     benchmarker.run(
-                      fmt::format("LibRapid (Matrix) | Matrix Transpose | {0}x{0} | {1}_threads",
+                      fmt::format(
+                        "LibRapid (Matrix) | Matrix Transpose | {0}x{0} | CPU | {1}_threads",
+                        size,
+                        threads),
+                      [&] {
+                          b = librapid::transpose(a);
+                          nanobench::doNotOptimizeAway(b);
+                      });
+                }
+
+#ifdef LIBRAPID_HAS_OPENCL
+                {
+                    // LibRapid Array Transpose
+                    librapid::Array<float, librapid::backend::OpenCL> a(
+                      librapid::Shape({size, size}));
+                    librapid::Array<float, librapid::backend::OpenCL> b(
+                      librapid::Shape({size, size}));
+
+                    benchmarker.run(
+                      fmt::format("LibRapid | Matrix Transpose | {0}x{0} | OpenCL | {1}_threads",
                                   size,
                                   threads),
                       [&] {
@@ -57,19 +76,39 @@ namespace bench {
                           nanobench::doNotOptimizeAway(b);
                       });
                 }
+#endif
+
+#ifdef LIBRAPID_HAS_CUDA
+                {
+                    // LibRapid Array Transpose
+                    librapid::Array<float, librapid::backend::CUDA> a(
+                      librapid::Shape({size, size}));
+                    librapid::Array<float, librapid::backend::CUDA> b(
+                      librapid::Shape({size, size}));
+
+                    benchmarker.run(
+                      fmt::format("LibRapid | Matrix Transpose | {0}x{0} | CUDA | {1}_threads",
+                                  size,
+                                  threads),
+                      [&] {
+                          b = librapid::transpose(a);
+                          nanobench::doNotOptimizeAway(b);
+                      });
+                }
+#endif
 
                 {
                     // Eigen Array Transpose
                     Eigen::Array<float, Eigen::Dynamic, Eigen::Dynamic> a(size, size);
                     Eigen::Array<float, Eigen::Dynamic, Eigen::Dynamic> b(size, size);
 
-                    benchmarker.run(fmt::format("Eigen | Matrix Transpose | {0}x{0} | {1}_threads",
-                                                size,
-                                                threads),
-                                    [&] {
-                                        b = a.transpose();
-                                        nanobench::doNotOptimizeAway(b);
-                                    });
+                    benchmarker.run(
+                      fmt::format(
+                        "Eigen | Matrix Transpose | {0}x{0} | CPU | {1}_threads", size, threads),
+                      [&] {
+                          b = a.transpose();
+                          nanobench::doNotOptimizeAway(b);
+                      });
                 }
 
                 {
@@ -79,7 +118,7 @@ namespace bench {
 
                     benchmarker.run(
                       fmt::format(
-                        "XTensor | Matrix Transpose | {0}x{0} | {1}_threads", size, threads),
+                        "XTensor | Matrix Transpose | {0}x{0} | CPU | {1}_threads", size, threads),
                       [&] {
                           b = xt::transpose(a);
                           nanobench::doNotOptimizeAway(b);

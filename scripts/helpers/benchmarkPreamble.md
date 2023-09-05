@@ -39,3 +39,12 @@ LibRapid's developers are looking into getting more powerful servers to run the 
 we do not currently have the funding or resources to do so.
 :::
 
+### Strange Results
+
+Occasionally, the benchmarks can produce some strange results where one library is disproportionately
+faster than the others. I'm not sure exactly why this happens, but my current theory is that it's to do with
+memory alignment of the code and fluctuations in the server's performance.
+
+Having more powerful runners may help to reduce the impact of these fluctuations, but I'm not sure if it will
+completely eliminate them. If you have any ideas, please let me know!
+
