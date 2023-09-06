@@ -85,7 +85,7 @@ def parseFileName(filename):
         return {
             "file": filename,
             "operation": out[1],
-            "numThreads": out[2]
+            "numThreads": out[2].split(".")[0]
         }
 
     # Invalid file name (probably not a benchmark output)
