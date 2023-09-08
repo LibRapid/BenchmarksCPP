@@ -22,24 +22,53 @@ Current benchmarks include:
 - Arithmetic operations (currently just array-array addition)
 - Matrix transposition
 
+## Running the Benchmarks
+
+To run the benchmarks, you can follow these steps:
+
+#### 1. Clone the repository
+
+```bash
+git clone --recursive https://github.com/LibRapid/BenchmarksCPP.git
+```
+
+#### 2. Build the benchmarks
+
+```bash
+cd BenchmarksCPP
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake --build . --config Release
+```
+
+#### 3. Run the benchmarks
+
+The exact location of the executable will depend on your operating system, but it will be in the `build` directory.
+
+```bash
+# Linux
+./BenchmarkCPP
+
+# Windows
+./release/BenchmarkCPP.exe
+```
+
+#### 4. View the results
+
+This repository contains some scripts to help interpret the results of the benchmarks. The executable writes the results
+to CSV files in the same directory as the executable. To plot the results, you can use the `dataProcessor.py` script in
+`./scripts/`.
+
+You can use `--help` to see the available options.
+
+Simply specify an input file/directory and an output location, and the script will generate a plot for each benchmark.
+You can specify whether to plot the graphs relative to a given library, or to plot the absolute performance.
+
 ## Results
 
-The results of the benchmarks can be found in `results/*.md`.
-
-## Learnings
-
-Based on these preliminary benchmarks, it's clear that LibRapid makes very effective use of multithreading, as, when
-more threads are used, it is often able to out-perform Eigen and XTensor. However, when using a single thread, LibRapid
-is almost always slower than its competitors.
-
-Additionally, some algorithms, such as matrix transposition, are unacceptably slow. These will be the primary focus of
-future optimisations for LibRapid until they reach or exceed the performance of Eigen and XTensor. Luckily (?), in many
-cases, the algorithms which perform poorly are already known to be inefficient, and have issues open requiring algorithm
-redesigns and code rewrites to accelerate them.
-
-Overall, considering LibRapid's current state and the fact that it has been developed solely
-by [me](https://github.com/Pencilcaseman), I am quite pleased that I'm even in a position where I can compare its
-performance against well-established libraries like Eigen and XTensor.
+The benchmark results are stored as artefacts on LibRapid's CI pipeline, and can also be found on
+the [LibRapid website](https://librapid.readthedocs.io/en/test/BenchmarkResults/BenchmarkResults.html)
 
 ## Contributing to LibRapid
 
