@@ -15,6 +15,8 @@
 
 #include <nanobench.h>
 
+#include <fstream>
+
 using namespace ankerl;
 
 #include "config.hpp"
